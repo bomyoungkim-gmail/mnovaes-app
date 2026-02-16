@@ -1,22 +1,26 @@
 "use client";
 
+import { useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 
-import { allProducts, formatBRL, getProductById } from "@/lib/data";
+import { formatBRL, getProductById } from "@/lib/data";
 
 const editorialProduct = getProductById("designer-coat");
-const jewelryProduct = getProductById("colar-solitario-luz");
-const spotlight = allProducts.slice(0, 3);
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
+const heroImage = `${basePath}/images/realistic/landing-hero.jpg`;
+const heroVideo = `${basePath}/videos/hero-editorial-16x10-zoom.mp4`;
+const heroVideo4k = `${basePath}/videos/hero-editorial-4k.mp4`;
 
 export function HeroEditorial() {
   const reduceMotion = useReducedMotion();
-  const hasProducts = Boolean(editorialProduct && jewelryProduct);
+  const [videoErrored, setVideoErrored] = useState(false);
+  const hasProducts = Boolean(editorialProduct);
   if (!hasProducts) return null;
   const primary = editorialProduct!;
-  const accent = jewelryProduct!;
+  const showVideo = !reduceMotion && !videoErrored;
 
   return (
     <section className="bg-[linear-gradient(170deg,#eceae4_0%,#f4f3ef_42%,#e7e3dd_100%)] px-3 py-4 md:px-8 md:py-10">
@@ -24,11 +28,49 @@ export function HeroEditorial() {
         initial={reduceMotion ? false : { opacity: 0, y: 16 }}
         animate={reduceMotion ? {} : { opacity: 1, y: 0 }}
         transition={{ duration: 0.35, ease: "easeOut" }}
-        className="mx-auto grid max-w-[1280px] gap-5 lg:grid-cols-[1.2fr_0.8fr] lg:items-end"
+        className="mx-auto max-w-[980px]"
       >
         <article className="relative overflow-hidden border border-black/10 bg-[#d9d5ce] shadow-luxe">
           <div className="relative aspect-[4/5] min-h-[560px] w-full md:aspect-[16/10] md:min-h-[640px]">
-            <Image src={primary.images.gallery[1] ?? primary.images.primary} alt={primary.name} fill priority className="object-cover" />
+            {showVideo ? (
+              <video
+                autoPlay
+                muted
+                loop
+                playsInline
+                preload="metadata"
+                poster={heroImage}
+                onError={() => setVideoErrored(true)}
+                className="h-full w-full object-cover"
+              >
+                <source src={heroVideo4k} type="video/mp4" media="(min-width: 1440px)" />
+                <source src={heroVideo} type="video/mp4" />
+              </video>
+            ) : (
+              <motion.div
+                className="relative h-full w-full"
+                initial={reduceMotion ? { scale: 1 } : { scale: 1.08 }}
+                animate={{ scale: 1 }}
+                transition={
+                  reduceMotion
+                    ? {}
+                    : {
+                        duration: 8,
+                        ease: "linear",
+                        repeat: Infinity,
+                        repeatType: "reverse",
+                      }
+                }
+              >
+                <Image
+                  src={heroImage}
+                  alt="Modelo vestindo a coleção M.Novaes"
+                  fill
+                  priority
+                  className="object-cover"
+                />
+              </motion.div>
+            )}
             <div className="absolute right-4 top-4 border border-black/15 bg-white/80 px-3 py-1 text-right backdrop-blur-sm md:right-6 md:top-6 md:px-4 md:py-2">
               <p className="font-serif text-xl leading-none md:text-2xl">L&apos;ATELIER</p>
               <p className="mt-0.5 text-[10px] uppercase tracking-editorial text-black/65 md:text-xs">Couture line</p>
@@ -50,32 +92,6 @@ export function HeroEditorial() {
             </Link>
           </div>
         </article>
-
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-1">
-          <article className="border border-black/10 bg-white/85 p-4 backdrop-blur-sm md:p-5">
-            <p className="text-[10px] uppercase tracking-editorial text-latelier-charcoal/65 md:text-xs">Selecao da Maison</p>
-            <h3 className="mt-2 font-serif text-3xl leading-none md:text-4xl">Essenciais em Movimento</h3>
-            <p className="mt-3 max-w-sm text-sm text-latelier-charcoal/75">
-              Silhuetas fluidas, joias de contraste e acabamentos de atelier para um visual mais elegante e menos rigido.
-            </p>
-            <Link
-              href={`/product/${accent.id}`}
-              className="mt-4 inline-flex h-9 items-center rounded-full border border-latelier-charcoal/30 px-4 text-xs uppercase tracking-editorial text-latelier-charcoal transition-colors duration-200 hover:border-latelier-charcoal"
-            >
-              Explorar curadoria
-            </Link>
-          </article>
-
-          <div className="grid grid-cols-3 gap-3">
-            {spotlight.map((item) => (
-              <Link key={item.id} href={`/product/${item.id}`} className="group block overflow-hidden border border-black/10 bg-white">
-                <div className="relative aspect-[3/4]">
-                  <Image src={item.images.primary} alt={item.name} fill className="object-cover transition-transform duration-300 group-hover:scale-105" />
-                </div>
-              </Link>
-            ))}
-          </div>
-        </div>
       </motion.div>
     </section>
   );

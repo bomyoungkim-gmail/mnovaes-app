@@ -15,6 +15,7 @@ type AuthContextValue = {
   isAuthenticated: boolean;
   login: (email: string, password: string) => { ok: boolean; message: string };
   register: (name: string, email: string, password: string) => { ok: boolean; message: string };
+  loginWithGoogleMock: () => Promise<{ ok: boolean; message: string }>;
   logout: () => void;
 };
 
@@ -99,6 +100,13 @@ export function AuthProvider({ children }: PropsWithChildren) {
         window.localStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify(sessionUser));
         setUser(sessionUser);
         return { ok: true, message: "Cadastro realizado com sucesso." };
+      },
+      loginWithGoogleMock: async () => {
+        await new Promise((resolve) => setTimeout(resolve, 900));
+        const sessionUser = { name: "Marina Novaes", email: "marina.novaes@gmail.com" };
+        window.localStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify(sessionUser));
+        setUser(sessionUser);
+        return { ok: true, message: "Login com Google realizado com sucesso (mock)." };
       },
       logout: () => {
         window.localStorage.removeItem(SESSION_STORAGE_KEY);

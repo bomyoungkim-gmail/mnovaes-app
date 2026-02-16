@@ -5,10 +5,11 @@ import { BaseLayout } from "@/components/layout/base-layout";
 import { Container } from "@/components/layout/container";
 import { HeroEditorial } from "@/components/commerce/hero-editorial";
 import { LuxuryProductCard } from "@/components/commerce/luxury-product-card";
-import { products } from "@/lib/data";
+import { SavoirFaireSection } from "@/components/commerce/savoir-faire-section";
+import { allProducts, products } from "@/lib/data";
 
 const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
-const essentials = products.slice(0, 3);
+const essentials = allProducts.slice(0, 4);
 const materials = [
   `${basePath}/images/realistic/silk-blouse-gallery2.jpg`,
   `${basePath}/images/realistic/designer-coat-gallery1.jpg`,
@@ -21,6 +22,8 @@ export default function Home() {
       <HeroEditorial />
 
       <Container className="space-y-10 py-10 md:space-y-14 md:py-14">
+        <SavoirFaireSection />
+
         <section>
           <header className="mb-4 flex items-end justify-between">
             <h2 className="font-serif text-4xl md:text-5xl">Essenciais da Estação</h2>
@@ -31,7 +34,7 @@ export default function Home() {
           <p className="mb-5 max-w-xl text-latelier-charcoal/75">
             Curadoria com foco em alfaiataria, texturas naturais e joias de contraste para uso diário.
           </p>
-          <div className="grid grid-cols-2 gap-4 xl:grid-cols-3 xl:gap-5">
+          <div className="grid grid-cols-2 gap-4 xl:grid-cols-4 xl:gap-5">
             {essentials.map((product) => (
               <LuxuryProductCard key={product.id} product={product} />
             ))}

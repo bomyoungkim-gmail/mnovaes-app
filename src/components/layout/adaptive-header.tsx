@@ -17,6 +17,7 @@ type HeaderProps = {
 
 export function AdaptiveHeader({ brand = "M.Novaes", dark = false }: HeaderProps) {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const { items } = useCart();
   const { count } = useWishlist();
   const { isAuthenticated } = useAuth();
@@ -39,12 +40,27 @@ export function AdaptiveHeader({ brand = "M.Novaes", dark = false }: HeaderProps
     };
   }, [menuOpen]);
 
+  useEffect(() => {
+    const onScroll = () => {
+      setScrolled(window.scrollY > 14);
+    };
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
   return (
     <>
       <header
         className={cn(
-          "sticky top-0 z-40 border-b backdrop-blur-sm",
-          dark ? "border-white/10 bg-black/40 text-white" : "border-latelier-charcoal/10 bg-white/90 text-latelier-charcoal"
+          "sticky top-0 z-40 border-b transition-colors duration-300",
+          dark
+            ? scrolled
+              ? "border-white/10 bg-black/45 text-white backdrop-blur-sm"
+              : "border-transparent bg-black/10 text-white"
+            : scrolled
+              ? "border-latelier-charcoal/10 bg-white/90 text-latelier-charcoal backdrop-blur-sm"
+              : "border-transparent bg-white/35 text-latelier-charcoal"
         )}
       >
         <div className="mx-auto flex h-16 max-w-[1560px] items-center justify-between px-4 md:px-8">

@@ -6,6 +6,7 @@ import { motion, useReducedMotion } from "framer-motion";
 
 import { OrderSummary } from "@/components/commerce/order-summary";
 import { BaseLayout } from "@/components/layout/base-layout";
+import { BreadcrumbMinimal } from "@/components/layout/breadcrumb-minimal";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -20,6 +21,14 @@ export default function CheckoutPage() {
 
   return (
     <BaseLayout>
+      <BreadcrumbMinimal
+        className="mb-4"
+        items={[
+          { label: "Início", href: "/" },
+          { label: "Sacola", href: "/cart" },
+          { label: "Checkout" }
+        ]}
+      />
       <h1 className="font-serif text-5xl md:text-7xl">Checkout</h1>
       {!isAuthenticated ? (
         <p className="mt-2 text-sm text-latelier-charcoal/75">

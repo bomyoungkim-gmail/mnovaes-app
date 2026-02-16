@@ -6,6 +6,7 @@ import { CartRow } from "@/components/commerce/cart-row";
 import { OrderSummary } from "@/components/commerce/order-summary";
 import { PageState } from "@/components/feedback/page-state";
 import { BaseLayout } from "@/components/layout/base-layout";
+import { BreadcrumbMinimal } from "@/components/layout/breadcrumb-minimal";
 import { useCart } from "@/context/cart-context";
 
 export default function CartPage() {
@@ -14,6 +15,7 @@ export default function CartPage() {
 
   return (
     <BaseLayout>
+      <BreadcrumbMinimal className="mb-4" items={[{ label: "Início", href: "/" }, { label: "Sacola" }]} />
       <h1 className="font-serif text-5xl md:text-7xl">Sacola de compras</h1>
 
       {lineItems.length === 0 ? (
