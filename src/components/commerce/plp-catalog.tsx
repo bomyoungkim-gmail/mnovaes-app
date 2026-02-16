@@ -7,7 +7,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { LuxuryProductCard } from "@/components/commerce/luxury-product-card";
 import { PageState } from "@/components/feedback/page-state";
 import { Skeleton } from "@/components/ui/skeleton";
-import type { Product } from "@/lib/data";
+import { type Product, products } from "@/lib/data";
 
 type FetchState = "idle" | "loading" | "success" | "error";
 
@@ -27,12 +27,12 @@ export function PlpCatalog() {
   const load = useCallback(async () => {
     setFetchState("loading");
     try {
-      const response = await fetch("/api/products", { cache: "no-store" });
-      if (!response.ok) {
-        throw new Error("Falha ao buscar catálogo");
-      }
-      const data = (await response.json()) as Product[];
-      setItems(data.concat(data));
+      // Simulate network request for UI consistency
+      await new Promise((resolve) => setTimeout(resolve, 600));
+      
+      // In a real app we might fetch, but for static export we use imported data
+      // items are duplicated to simulate a larger catalog as per original logic
+      setItems(products.concat(products));
       setFetchState("success");
     } catch {
       setFetchState("error");
