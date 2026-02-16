@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
 import { Camera, ImagePlus, Sparkles } from "lucide-react";
 
@@ -89,7 +90,14 @@ export function AIVisualSearch() {
         <div className="space-y-3">
           <div className="relative flex aspect-square items-center justify-center overflow-hidden rounded-sm border border-latelier-charcoal/15 bg-latelier-silk">
             {previewUrl ? (
-              <img src={previewUrl} alt="Imagem enviada para busca visual" className="h-full w-full object-cover" />
+              <Image
+                src={previewUrl}
+                alt="Imagem enviada para busca visual"
+                fill
+                unoptimized
+                sizes="250px"
+                className="object-cover"
+              />
             ) : (
               <div className="flex flex-col items-center text-latelier-charcoal/55">
                 <Camera className="h-6 w-6" />

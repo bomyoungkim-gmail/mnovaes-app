@@ -1,19 +1,14 @@
 import Image from "next/image";
 import { notFound } from "next/navigation";
-import dynamic from "next/dynamic";
 
 import { LuxuryProductCard } from "@/components/commerce/luxury-product-card";
 import { CuratedRecommendations } from "@/components/commerce/curated-recommendations";
+import { Jewelry3DStage } from "@/components/commerce/jewelry-3d-stage";
 import { PdpPurchasePanel } from "@/components/commerce/pdp-purchase-panel";
 import { BaseLayout } from "@/components/layout/base-layout";
 import { BreadcrumbMinimal } from "@/components/layout/breadcrumb-minimal";
 import { Container } from "@/components/layout/container";
 import { allProducts } from "@/lib/data";
-
-const Jewelry3DStage = dynamic(
-  () => import("@/components/commerce/jewelry-3d-stage").then((mod) => mod.Jewelry3DStage),
-  { ssr: false }
-);
 
 export async function generateStaticParams() {
   return allProducts.map((product) => ({
