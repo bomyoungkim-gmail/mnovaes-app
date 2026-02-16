@@ -1,73 +1,65 @@
 "use client";
 
-import { useState } from "react";
-import { motion, useReducedMotion } from "framer-motion";
+import { useState, useEffect } from "react";
+import { motion, useReducedMotion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 
-import { formatBRL, getProductById } from "@/lib/data";
+import { formatBRL, getProductById, asset } from "@/lib/data";
 
 const editorialProduct = getProductById("designer-coat");
-const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
-const heroImage = `${basePath}/images/realistic/landing-hero.jpg`;
-const heroVideo = `${basePath}/videos/hero-editorial-16x10-zoom.mp4`;
-const heroVideo4k = `${basePath}/videos/hero-editorial-4k.mp4`;
+const heroSlides = [
+  asset("/images/realistic/hero-slide-1.jpg"),
+  asset("/images/realistic/hero-slide-2.jpg"),
+  asset("/images/realistic/hero-slide-3.jpg"),
+];
+
+function SlideshowImages() {
+  const [index, setIndex] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setIndex((prev) => (prev + 1) % heroSlides.length);
+    }, 5000); // Change slide every 5 seconds
+    return () => clearInterval(timer);
+  }, []);
+
+  return (
+    <AnimatePresence mode="popLayout">
+      <motion.div
+        key={index}
+        className="absolute inset-0 h-full w-full"
+        initial={{ opacity: 0, scale: 1.1 }}
+        animate={{ opacity: 1, scale: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 1.5, ease: "easeInOut" }}
+      >
+        <Image
+          src={heroSlides[index]}
+          alt={`Modelo M.Novaes - Slide ${index + 1}`}
+          fill
+          priority
+          className="object-cover object-[center_20%]"
+        />
+      </motion.div>
+    </AnimatePresence>
+  );
+}
 
 export function HeroEditorial() {
   const reduceMotion = useReducedMotion();
-  const [videoErrored, setVideoErrored] = useState(false);
   const hasProducts = Boolean(editorialProduct);
   if (!hasProducts) return null;
   const primary = editorialProduct!;
-  const showVideo = !reduceMotion && !videoErrored;
 
   return (
     <section className="relative h-[90vh] min-h-[700px] w-full overflow-hidden bg-[#e8e6e1] md:h-[130vh]">
       {/* Background Media Container */}
       <div className="absolute inset-0 z-0 h-full w-full">
-        {showVideo ? (
-          <video
-            autoPlay
-            muted
-            loop
-            playsInline
-            preload="metadata"
-            poster={heroImage}
-            onError={() => setVideoErrored(true)}
-            className="h-full w-full object-cover"
-          >
-            <source src={heroVideo4k} type="video/mp4" media="(min-width: 1440px)" />
-            <source src={heroVideo} type="video/mp4" />
-          </video>
-        ) : (
-          <motion.div
-            className="relative h-full w-full"
-            initial={reduceMotion ? { scale: 1 } : { scale: 1.05 }}
-            animate={{ scale: 1 }}
-            transition={
-              reduceMotion
-                ? {}
-                : {
-                    duration: 12,
-                    ease: "linear",
-                    repeat: Infinity,
-                    repeatType: "reverse",
-                  }
-            }
-          >
-            <Image
-              src={heroImage}
-              alt="Modelo vestindo a coleção M.Novaes"
-              fill
-              priority
-              className="object-cover"
-            />
-          </motion.div>
-        )}
-        
+        <SlideshowImages />
         {/* Subtle overlay for contrast */}
-        <div className="absolute inset-0 bg-black/5" />
+        <div className="absolute inset-0 bg-black/10" />
       </div>
 
       {/* Asymmetrical White Overlay */}
