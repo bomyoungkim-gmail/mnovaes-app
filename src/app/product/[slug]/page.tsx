@@ -7,6 +7,13 @@ import { BaseLayout } from "@/components/layout/base-layout";
 import { Container } from "@/components/layout/container";
 import { products } from "@/lib/data";
 
+export async function generateStaticParams() {
+  return products.map((product) => ({
+    slug: product.id,
+  }));
+}
+
+
 type ProductPageProps = {
   params: Promise<{ slug: string }>;
 };
