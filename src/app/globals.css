@@ -1,0 +1,47 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: 36 24% 96%;
+  --foreground: 0 0% 10%;
+  --border: 0 0% 83%;
+  --input: 0 0% 92%;
+  --ring: 0 0% 18%;
+}
+
+* {
+  @apply border-border;
+}
+
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+body {
+  @apply bg-latelier-sand text-latelier-charcoal;
+}
+
+main {
+  @apply pb-24 md:pb-0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
