@@ -61,7 +61,7 @@ export const products: Product[] = [
     price: 45000,
     category: "joias",
     description:
-      "Colar de corrente fina com pedra central para composicao noturna da linha Ethere.",
+      "Colar de corrente fina com pedra central para composicao noturna da linha M.Novaes.",
     sizes: ["Unico"],
     theme: "ethere",
     images: {
