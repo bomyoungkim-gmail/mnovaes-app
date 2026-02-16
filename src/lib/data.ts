@@ -13,6 +13,9 @@ export type Product = {
   };
 };
 
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
+const asset = (path: string) => `${basePath}${path}`;
+
 export const products: Product[] = [
   {
     id: "anel-solitario-luna",
@@ -24,12 +27,12 @@ export const products: Product[] = [
     sizes: ["12", "14", "16", "18"],
     theme: "ethere",
     images: {
-      primary: "/images/realistic/anel-solitario-luna-primary.jpg",
-      hover: "/images/realistic/anel-solitario-luna-hover.jpg",
+      primary: asset("/images/realistic/anel-solitario-luna-primary.jpg"),
+      hover: asset("/images/realistic/anel-solitario-luna-hover.jpg"),
       gallery: [
-        "/images/realistic/anel-solitario-luna-primary.jpg",
-        "/images/realistic/anel-solitario-luna-gallery1.jpg",
-        "/images/realistic/anel-solitario-luna-gallery2.jpg",
+        asset("/images/realistic/anel-solitario-luna-primary.jpg"),
+        asset("/images/realistic/anel-solitario-luna-gallery1.jpg"),
+        asset("/images/realistic/anel-solitario-luna-gallery2.jpg")
       ],
     },
   },
@@ -43,12 +46,12 @@ export const products: Product[] = [
     sizes: ["P", "M", "G", "GG"],
     theme: "latelier",
     images: {
-      primary: "/images/realistic/designer-coat-primary.jpg",
-      hover: "/images/realistic/designer-coat-hover.jpg",
+      primary: asset("/images/realistic/designer-coat-primary.jpg"),
+      hover: asset("/images/realistic/designer-coat-hover.jpg"),
       gallery: [
-        "/images/realistic/designer-coat-primary.jpg",
-        "/images/realistic/designer-coat-gallery1.jpg",
-        "/images/realistic/designer-coat-gallery2.jpg",
+        asset("/images/realistic/designer-coat-primary.jpg"),
+        asset("/images/realistic/designer-coat-gallery1.jpg"),
+        asset("/images/realistic/designer-coat-gallery2.jpg")
       ],
     },
   },
@@ -62,12 +65,12 @@ export const products: Product[] = [
     sizes: ["Unico"],
     theme: "ethere",
     images: {
-      primary: "/images/realistic/colar-solitario-luz-primary.jpg",
-      hover: "/images/realistic/colar-solitario-luz-hover.jpg",
+      primary: asset("/images/realistic/colar-solitario-luz-primary.jpg"),
+      hover: asset("/images/realistic/colar-solitario-luz-hover.jpg"),
       gallery: [
-        "/images/realistic/colar-solitario-luz-primary.jpg",
-        "/images/realistic/colar-solitario-luz-gallery1.jpg",
-        "/images/realistic/colar-solitario-luz-gallery2.jpg",
+        asset("/images/realistic/colar-solitario-luz-primary.jpg"),
+        asset("/images/realistic/colar-solitario-luz-gallery1.jpg"),
+        asset("/images/realistic/colar-solitario-luz-gallery2.jpg")
       ],
     },
   },
@@ -81,12 +84,12 @@ export const products: Product[] = [
     sizes: ["P", "M", "G"],
     theme: "latelier",
     images: {
-      primary: "/images/realistic/silk-blouse-primary.jpg",
-      hover: "/images/realistic/silk-blouse-hover.jpg",
+      primary: asset("/images/realistic/silk-blouse-primary.jpg"),
+      hover: asset("/images/realistic/silk-blouse-hover.jpg"),
       gallery: [
-        "/images/realistic/silk-blouse-primary.jpg",
-        "/images/realistic/silk-blouse-gallery1.jpg",
-        "/images/realistic/silk-blouse-gallery2.jpg",
+        asset("/images/realistic/silk-blouse-primary.jpg"),
+        asset("/images/realistic/silk-blouse-gallery1.jpg"),
+        asset("/images/realistic/silk-blouse-gallery2.jpg")
       ],
     },
   },
@@ -103,12 +106,12 @@ export const mockProducts: Product[] = [
     sizes: ["Único"],
     theme: "ethere",
     images: {
-      primary: "/images/realistic/colar-aurora-primary.jpg",
-      hover: "/images/realistic/colar-aurora-hover.jpg",
+      primary: asset("/images/realistic/colar-aurora-primary.jpg"),
+      hover: asset("/images/realistic/colar-aurora-hover.jpg"),
       gallery: [
-        "/images/realistic/colar-aurora-primary.jpg",
-        "/images/realistic/colar-aurora-gallery1.jpg",
-        "/images/realistic/colar-aurora-gallery2.jpg",
+        asset("/images/realistic/colar-aurora-primary.jpg"),
+        asset("/images/realistic/colar-aurora-gallery1.jpg"),
+        asset("/images/realistic/colar-aurora-gallery2.jpg")
       ],
     },
   },
@@ -122,12 +125,12 @@ export const mockProducts: Product[] = [
     sizes: ["P", "M", "G", "GG"],
     theme: "latelier",
     images: {
-      primary: "/images/realistic/jaqueta-urban-primary.jpg",
-      hover: "/images/realistic/jaqueta-urban-hover.jpg",
+      primary: asset("/images/realistic/jaqueta-urban-primary.jpg"),
+      hover: asset("/images/realistic/jaqueta-urban-hover.jpg"),
       gallery: [
-        "/images/realistic/jaqueta-urban-primary.jpg",
-        "/images/realistic/jaqueta-urban-gallery1.jpg",
-        "/images/realistic/jaqueta-urban-gallery2.jpg",
+        asset("/images/realistic/jaqueta-urban-primary.jpg"),
+        asset("/images/realistic/jaqueta-urban-gallery1.jpg"),
+        asset("/images/realistic/jaqueta-urban-gallery2.jpg")
       ],
     },
   },

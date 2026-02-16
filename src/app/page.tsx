@@ -7,11 +7,12 @@ import { HeroEditorial } from "@/components/commerce/hero-editorial";
 import { LuxuryProductCard } from "@/components/commerce/luxury-product-card";
 import { products } from "@/lib/data";
 
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 const essentials = products.slice(0, 3);
 const materials = [
-  "/images/realistic/silk-blouse-gallery2.jpg",
-  "/images/realistic/designer-coat-gallery1.jpg",
-  "/images/realistic/jaqueta-urban-gallery2.jpg"
+  `${basePath}/images/realistic/silk-blouse-gallery2.jpg`,
+  `${basePath}/images/realistic/designer-coat-gallery1.jpg`,
+  `${basePath}/images/realistic/jaqueta-urban-gallery2.jpg`
 ];
 
 export default function Home() {

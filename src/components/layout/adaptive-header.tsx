@@ -1,7 +1,8 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
-import { Heart, Menu, Search, UserRound } from "lucide-react";
+import { Heart, Menu, Search, UserRound, X } from "lucide-react";
 
 import { QuickCartDrawer } from "@/components/commerce/quick-cart-drawer";
 import { useAuth } from "@/context/auth-context";
@@ -15,10 +16,19 @@ type HeaderProps = {
 };
 
 export function AdaptiveHeader({ brand = "M.Novaes", dark = false }: HeaderProps) {
+  const [menuOpen, setMenuOpen] = useState(false);
   const { items } = useCart();
   const { count } = useWishlist();
   const { isAuthenticated } = useAuth();
   const itemCount = items.reduce((acc, item) => acc + item.quantity, 0);
+
+  const menuLinks = [
+    { href: "/", label: "Início" },
+    { href: "/plp", label: "Coleção" },
+    { href: "/wishlist", label: "Wishlist" },
+    { href: "/cart", label: "Sacola" },
+    { href: "/account", label: "Conta" }
+  ];
 
   return (
     <header
@@ -30,6 +40,7 @@ export function AdaptiveHeader({ brand = "M.Novaes", dark = false }: HeaderProps
       <div className="mx-auto flex h-16 max-w-[1560px] items-center justify-between px-4 md:px-8">
         <button
           aria-label="Abrir menu"
+          onClick={() => setMenuOpen(true)}
           className="rounded-sm p-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-current"
         >
           <Menu className="h-5 w-5" />
@@ -66,6 +77,40 @@ export function AdaptiveHeader({ brand = "M.Novaes", dark = false }: HeaderProps
           <QuickCartDrawer count={itemCount} />
         </div>
       </div>
+      {menuOpen ? (
+        <div className="fixed inset-0 z-50 bg-black/45" onClick={() => setMenuOpen(false)}>
+          <aside
+            className="absolute left-0 top-0 h-full w-[86%] max-w-sm border-r border-latelier-charcoal/15 bg-white p-5 text-latelier-charcoal shadow-luxe"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <div className="mb-8 flex items-center justify-between">
+              <p className="font-serif text-4xl">M.Novaes</p>
+              <button
+                aria-label="Fechar menu"
+                className="rounded-sm p-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-latelier-charcoal/40"
+                onClick={() => setMenuOpen(false)}
+              >
+                <X className="h-5 w-5" />
+              </button>
+            </div>
+            <nav aria-label="Menu principal">
+              <ul className="space-y-4">
+                {menuLinks.map((item) => (
+                  <li key={item.href}>
+                    <Link
+                      href={item.href}
+                      onClick={() => setMenuOpen(false)}
+                      className="block text-lg uppercase tracking-editorial text-latelier-charcoal/90 hover:text-latelier-charcoal"
+                    >
+                      {item.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          </aside>
+        </div>
+      ) : null}
     </header>
   );
 }

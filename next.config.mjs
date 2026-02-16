@@ -8,6 +8,9 @@ const nextConfig = {
   trailingSlash: true,
   basePath: repoBasePath,
   assetPrefix: repoBasePath,
+  env: {
+    NEXT_PUBLIC_BASE_PATH: repoBasePath
+  },
   images: {
     unoptimized: true,
     remotePatterns: [
