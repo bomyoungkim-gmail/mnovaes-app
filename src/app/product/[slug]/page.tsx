@@ -5,10 +5,10 @@ import { LuxuryProductCard } from "@/components/commerce/luxury-product-card";
 import { PdpPurchasePanel } from "@/components/commerce/pdp-purchase-panel";
 import { BaseLayout } from "@/components/layout/base-layout";
 import { Container } from "@/components/layout/container";
-import { products } from "@/lib/data";
+import { allProducts } from "@/lib/data";
 
 export async function generateStaticParams() {
-  return products.map((product) => ({
+  return allProducts.map((product) => ({
     slug: product.id,
   }));
 }
@@ -20,13 +20,13 @@ type ProductPageProps = {
 
 export default async function ProductPage({ params }: ProductPageProps) {
   const { slug } = await params;
-  const product = products.find((item) => item.id === slug);
+  const product = allProducts.find((item) => item.id === slug);
 
   if (!product) {
     notFound();
   }
 
-  const recommended = products.filter((item) => item.id !== product.id).slice(0, 4);
+  const recommended = allProducts.filter((item) => item.id !== product.id).slice(0, 4);
 
   return (
     <BaseLayout brand="M.Novaes" fluid>

@@ -7,7 +7,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { LuxuryProductCard } from "@/components/commerce/luxury-product-card";
 import { PageState } from "@/components/feedback/page-state";
 import { Skeleton } from "@/components/ui/skeleton";
-import { type Product, products } from "@/lib/data";
+import { allProducts, type Product } from "@/lib/data";
 
 type FetchState = "idle" | "loading" | "success" | "error";
 
@@ -30,9 +30,8 @@ export function PlpCatalog() {
       // Simulate network request for UI consistency
       await new Promise((resolve) => setTimeout(resolve, 600));
       
-      // In a real app we might fetch, but for static export we use imported data
-      // items are duplicated to simulate a larger catalog as per original logic
-      setItems(products.concat(products));
+      // In a real app we might fetch, but for static export we use imported data.
+      setItems(allProducts.concat(allProducts));
       setFetchState("success");
     } catch {
       setFetchState("error");

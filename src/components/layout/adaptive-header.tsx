@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Heart, Menu, Search, UserRound, X } from "lucide-react";
 
@@ -30,57 +30,68 @@ export function AdaptiveHeader({ brand = "M.Novaes", dark = false }: HeaderProps
     { href: "/account", label: "Conta" }
   ];
 
+  useEffect(() => {
+    if (!menuOpen) return;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [menuOpen]);
+
   return (
-    <header
-      className={cn(
-        "sticky top-0 z-40 border-b backdrop-blur-sm",
-        dark ? "border-white/10 bg-black/40 text-white" : "border-latelier-charcoal/10 bg-white/90 text-latelier-charcoal"
-      )}
-    >
-      <div className="mx-auto flex h-16 max-w-[1560px] items-center justify-between px-4 md:px-8">
-        <button
-          aria-label="Abrir menu"
-          onClick={() => setMenuOpen(true)}
-          className="rounded-sm p-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-current"
-        >
-          <Menu className="h-5 w-5" />
-        </button>
-        <Link href="/" className="font-serif text-3xl leading-none md:text-[3.2rem]">
-          {brand}
-        </Link>
-        <div className="flex items-center gap-1 md:gap-2">
-          <Link
-            href="/account"
-            aria-label={isAuthenticated ? "Minha conta" : "Login e cadastro"}
+    <>
+      <header
+        className={cn(
+          "sticky top-0 z-40 border-b backdrop-blur-sm",
+          dark ? "border-white/10 bg-black/40 text-white" : "border-latelier-charcoal/10 bg-white/90 text-latelier-charcoal"
+        )}
+      >
+        <div className="mx-auto flex h-16 max-w-[1560px] items-center justify-between px-4 md:px-8">
+          <button
+            aria-label="Abrir menu"
+            onClick={() => setMenuOpen(true)}
             className="rounded-sm p-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-current"
           >
-            <UserRound className="h-5 w-5" />
-          </Link>
-          <Link
-            href="/wishlist"
-            aria-label="Favoritos"
-            className="relative rounded-sm p-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-current"
-          >
-            <Heart className={cn("h-5 w-5", count > 0 ? "fill-current" : "")} />
-            {count > 0 ? (
-              <span className="absolute right-0 top-0 inline-flex h-4 min-w-4 items-center justify-center rounded-full bg-latelier-charcoal px-1 text-[9px] text-white">
-                {count}
-              </span>
-            ) : null}
-          </Link>
-          <button
-            aria-label="Buscar"
-            className="rounded-sm p-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-current md:hidden"
-          >
-            <Search className="h-5 w-5" />
+            <Menu className="h-5 w-5" />
           </button>
-          <QuickCartDrawer count={itemCount} />
+          <Link href="/" className="font-serif text-3xl leading-none md:text-[3.2rem]">
+            {brand}
+          </Link>
+          <div className="flex items-center gap-1 md:gap-2">
+            <Link
+              href="/account"
+              aria-label={isAuthenticated ? "Minha conta" : "Login e cadastro"}
+              className="rounded-sm p-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-current"
+            >
+              <UserRound className="h-5 w-5" />
+            </Link>
+            <Link
+              href="/wishlist"
+              aria-label="Favoritos"
+              className="relative rounded-sm p-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-current"
+            >
+              <Heart className={cn("h-5 w-5", count > 0 ? "fill-current" : "")} />
+              {count > 0 ? (
+                <span className="absolute right-0 top-0 inline-flex h-4 min-w-4 items-center justify-center rounded-full bg-latelier-charcoal px-1 text-[9px] text-white">
+                  {count}
+                </span>
+              ) : null}
+            </Link>
+            <button
+              aria-label="Buscar"
+              className="rounded-sm p-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-current md:hidden"
+            >
+              <Search className="h-5 w-5" />
+            </button>
+            <QuickCartDrawer count={itemCount} />
+          </div>
         </div>
-      </div>
+      </header>
       {menuOpen ? (
-        <div className="fixed inset-0 z-50 bg-black/45" onClick={() => setMenuOpen(false)}>
+        <div className="fixed inset-0 z-[90] bg-black/55" onClick={() => setMenuOpen(false)}>
           <aside
-            className="absolute left-0 top-0 h-full w-[86%] max-w-sm border-r border-latelier-charcoal/15 bg-white p-5 text-latelier-charcoal shadow-luxe"
+            className="absolute left-0 top-0 h-full w-[88%] max-w-sm border-r border-latelier-charcoal/20 bg-[#f4f2ee] p-5 text-latelier-charcoal shadow-luxe"
             onClick={(event) => event.stopPropagation()}
           >
             <div className="mb-8 flex items-center justify-between">
@@ -111,6 +122,6 @@ export function AdaptiveHeader({ brand = "M.Novaes", dark = false }: HeaderProps
           </aside>
         </div>
       ) : null}
-    </header>
+    </>
   );
 }

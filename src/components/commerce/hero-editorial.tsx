@@ -1,171 +1,81 @@
 "use client";
 
-import { useMemo, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
-import { Menu, Search, ShoppingBag } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 
-import { formatBRL, getProductById, products } from "@/lib/data";
+import { allProducts, formatBRL, getProductById } from "@/lib/data";
 
 const editorialProduct = getProductById("designer-coat");
 const jewelryProduct = getProductById("colar-solitario-luz");
-const secondaryGrid = products.slice(0, 6);
-
-type ScreenMode = "editorial" | "jewelry";
-
-function PreviewHeader() {
-  return (
-    <div className="flex h-10 items-center justify-between border-b border-current/10 px-4">
-      <span className="font-serif text-[1.75rem] leading-none">M.Novaes</span>
-      <div className="flex items-center gap-2.5">
-        <Search className="h-4 w-4" />
-        <ShoppingBag className="h-4 w-4" />
-        <Menu className="h-4 w-4" />
-      </div>
-    </div>
-  );
-}
-
-function ProductMiniGrid() {
-  return (
-    <div className="grid grid-cols-3 gap-2.5">
-      {secondaryGrid.slice(0, 6).map((item) => (
-        <Link
-          key={item.id}
-          href={`/product/${item.id}`}
-          className="group overflow-hidden rounded-sm border border-latelier-charcoal/10 bg-white"
-        >
-          <div className="relative aspect-[4/5]">
-            <Image
-              src={item.images.primary}
-              alt={item.name}
-              fill
-              className="object-cover transition-transform duration-300 group-hover:scale-105"
-            />
-          </div>
-        </Link>
-      ))}
-    </div>
-  );
-}
-
-function LandingScreen({ mode }: { mode: ScreenMode }) {
-  const dark = mode === "jewelry";
-  const product = dark ? jewelryProduct : editorialProduct;
-  if (!product) return null;
-
-  return (
-    <article
-      className={`w-full max-w-[430px] overflow-hidden border shadow-luxe ${
-        dark ? "border-white/15 bg-[#0a0a0a] text-white" : "border-latelier-charcoal/15 bg-white text-latelier-charcoal"
-      }`}
-    >
-      <PreviewHeader />
-
-      <div className="relative">
-        <div className="relative h-[55vh] min-h-[460px]">
-          <Image src={product.images.primary} alt={product.name} fill priority className="object-cover" />
-
-          <div
-            className={`absolute inset-x-0 bottom-0 p-6 ${
-              dark ? "bg-gradient-to-t from-black via-black/75 to-transparent" : "bg-gradient-to-t from-white via-white/65 to-transparent"
-            }`}
-          >
-            <h2 className={`font-serif text-[2.6rem] leading-none ${dark ? "text-white" : "text-latelier-charcoal"}`}>
-              {dark ? "Colar Solitário Luz" : "M.Novaes"}
-            </h2>
-            <p className={`mt-1 text-sm ${dark ? "text-white/80" : "text-latelier-charcoal/75"}`}>
-              {dark ? "Edição Noturna" : "Editorial Fit"}
-            </p>
-            <p className={`mt-1.5 text-2xl ${dark ? "text-white" : "text-latelier-charcoal"}`}>{formatBRL(product.price)}</p>
-            <Link
-              href={`/product/${product.id}`}
-              className={`mt-4 inline-flex h-9 items-center rounded-full border px-4 text-xs uppercase tracking-editorial ${
-                dark
-                  ? "border-ethere-gold text-ethere-gold hover:bg-ethere-gold hover:text-black"
-                  : "border-latelier-charcoal text-latelier-charcoal hover:bg-latelier-charcoal hover:text-white"
-              } transition-colors`}
-            >
-              Adicionar à sacola
-            </Link>
-          </div>
-
-          <div className="absolute bottom-0 right-0 h-14 w-full -skew-y-6 bg-white/95" />
-        </div>
-      </div>
-
-      <div className={`space-y-4 p-4 ${dark ? "bg-white text-latelier-charcoal" : "bg-white"}`}>
-        <div className="flex items-end justify-between">
-          <h3 className="font-serif text-[2rem] leading-none">Essenciais da Estação</h3>
-          <span className="text-[10px] uppercase tracking-editorial text-latelier-charcoal/60">S26</span>
-        </div>
-
-        <ProductMiniGrid />
-
-        <div className="pt-1">
-          <h4 className="font-serif text-2xl">Matéria Prima</h4>
-          <p className="mt-1 text-xs text-latelier-charcoal/70">
-            Curadoria de texturas e acabamentos para peças de longa duração.
-          </p>
-        </div>
-      </div>
-    </article>
-  );
-}
-
-function MobileSwitcher() {
-  const [activeMode, setActiveMode] = useState<ScreenMode>("editorial");
-
-  return (
-    <div className="md:hidden">
-      <div className="mx-auto mb-3 flex max-w-[430px] rounded-full border border-latelier-charcoal/20 bg-white p-1">
-        <button
-          type="button"
-          onClick={() => setActiveMode("editorial")}
-          className={`h-9 flex-1 rounded-full text-xs uppercase tracking-editorial transition-colors ${
-            activeMode === "editorial" ? "bg-latelier-charcoal text-white" : "text-latelier-charcoal"
-          }`}
-        >
-          Editorial
-        </button>
-        <button
-          type="button"
-          onClick={() => setActiveMode("jewelry")}
-          className={`h-9 flex-1 rounded-full text-xs uppercase tracking-editorial transition-colors ${
-            activeMode === "jewelry" ? "bg-latelier-charcoal text-white" : "text-latelier-charcoal"
-          }`}
-        >
-          Joias
-        </button>
-      </div>
-
-      <div className="flex justify-center">
-        <LandingScreen mode={activeMode} />
-      </div>
-    </div>
-  );
-}
+const spotlight = allProducts.slice(0, 3);
 
 export function HeroEditorial() {
   const reduceMotion = useReducedMotion();
-  const hasProducts = useMemo(() => Boolean(editorialProduct && jewelryProduct), []);
+  const hasProducts = Boolean(editorialProduct && jewelryProduct);
   if (!hasProducts) return null;
+  const primary = editorialProduct!;
+  const accent = jewelryProduct!;
 
   return (
-    <section className="bg-[#efefec] px-3 py-4 md:px-8 md:py-10">
+    <section className="bg-[linear-gradient(170deg,#eceae4_0%,#f4f3ef_42%,#e7e3dd_100%)] px-3 py-4 md:px-8 md:py-10">
       <motion.div
         initial={reduceMotion ? false : { opacity: 0, y: 16 }}
         animate={reduceMotion ? {} : { opacity: 1, y: 0 }}
         transition={{ duration: 0.35, ease: "easeOut" }}
-        className="mx-auto max-w-[1280px]"
+        className="mx-auto grid max-w-[1280px] gap-5 lg:grid-cols-[1.2fr_0.8fr] lg:items-end"
       >
-        <div className="hidden items-start justify-center gap-8 md:flex lg:gap-12">
-          <LandingScreen mode="editorial" />
-          <LandingScreen mode="jewelry" />
-        </div>
+        <article className="relative overflow-hidden border border-black/10 bg-[#d9d5ce] shadow-luxe">
+          <div className="relative aspect-[4/5] min-h-[560px] w-full md:aspect-[16/10] md:min-h-[640px]">
+            <Image src={primary.images.gallery[1] ?? primary.images.primary} alt={primary.name} fill priority className="object-cover" />
+            <div className="absolute right-4 top-4 border border-black/15 bg-white/80 px-3 py-1 text-right backdrop-blur-sm md:right-6 md:top-6 md:px-4 md:py-2">
+              <p className="font-serif text-xl leading-none md:text-2xl">L&apos;ATELIER</p>
+              <p className="mt-0.5 text-[10px] uppercase tracking-editorial text-black/65 md:text-xs">Couture line</p>
+            </div>
+          </div>
 
-        <MobileSwitcher />
+          <div
+            className="absolute bottom-0 left-0 right-0 bg-white/95 p-5 text-latelier-charcoal md:p-8"
+            style={{ clipPath: "polygon(0 23%, 100% 0, 100% 100%, 0 100%)" }}
+          >
+            <h2 className="font-serif text-[2.2rem] leading-none md:text-[3.2rem]">L&apos;ATELIER</h2>
+            <p className="mt-1 text-sm text-latelier-charcoal/70 md:text-base">Editorial fit</p>
+            <p className="mt-1.5 text-xl md:text-2xl">{formatBRL(primary.price)}</p>
+            <Link
+              href={`/product/${primary.id}`}
+              className="mt-4 inline-flex h-9 items-center gap-2 rounded-full border border-latelier-charcoal px-4 text-xs uppercase tracking-editorial text-latelier-charcoal transition-colors duration-200 hover:bg-latelier-charcoal hover:text-white"
+            >
+              Ver produto <ArrowUpRight className="h-3.5 w-3.5" />
+            </Link>
+          </div>
+        </article>
+
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-1">
+          <article className="border border-black/10 bg-white/85 p-4 backdrop-blur-sm md:p-5">
+            <p className="text-[10px] uppercase tracking-editorial text-latelier-charcoal/65 md:text-xs">Selecao da Maison</p>
+            <h3 className="mt-2 font-serif text-3xl leading-none md:text-4xl">Essenciais em Movimento</h3>
+            <p className="mt-3 max-w-sm text-sm text-latelier-charcoal/75">
+              Silhuetas fluidas, joias de contraste e acabamentos de atelier para um visual mais elegante e menos rigido.
+            </p>
+            <Link
+              href={`/product/${accent.id}`}
+              className="mt-4 inline-flex h-9 items-center rounded-full border border-latelier-charcoal/30 px-4 text-xs uppercase tracking-editorial text-latelier-charcoal transition-colors duration-200 hover:border-latelier-charcoal"
+            >
+              Explorar curadoria
+            </Link>
+          </article>
+
+          <div className="grid grid-cols-3 gap-3">
+            {spotlight.map((item) => (
+              <Link key={item.id} href={`/product/${item.id}`} className="group block overflow-hidden border border-black/10 bg-white">
+                <div className="relative aspect-[3/4]">
+                  <Image src={item.images.primary} alt={item.name} fill className="object-cover transition-transform duration-300 group-hover:scale-105" />
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
       </motion.div>
     </section>
   );

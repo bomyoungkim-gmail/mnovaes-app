@@ -136,6 +136,8 @@ export const mockProducts: Product[] = [
   },
 ];
 
+export const allProducts: Product[] = [...products, ...mockProducts];
+
 export const initialCartItems: Array<{ productId: string; quantity: number }> =
   [
     { productId: "anel-solitario-luna", quantity: 1 },
@@ -143,7 +145,7 @@ export const initialCartItems: Array<{ productId: string; quantity: number }> =
   ];
 
 export function getProductById(productId: string) {
-  return products.find((item) => item.id === productId) ?? null;
+  return allProducts.find((item) => item.id === productId) ?? null;
 }
 
 export function formatBRL(value: number) {
