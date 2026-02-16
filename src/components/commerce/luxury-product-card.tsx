@@ -5,6 +5,7 @@ import { motion, useReducedMotion } from "framer-motion";
 import Image from "next/image";
 import { Heart } from "lucide-react";
 
+import { useWishlist } from "@/context/wishlist-context";
 import { formatBRL, type Product } from "@/lib/data";
 
 type ProductCardProps = {
@@ -13,6 +14,8 @@ type ProductCardProps = {
 
 export function LuxuryProductCard({ product }: ProductCardProps) {
   const reduceMotion = useReducedMotion();
+  const { isFavorite, toggleFavorite } = useWishlist();
+  const favorite = isFavorite(product.id);
 
   return (
     <motion.article
@@ -45,10 +48,15 @@ export function LuxuryProductCard({ product }: ProductCardProps) {
           <span className="sr-only">Ver {product.name}</span>
         </Link>
         <button
-          aria-label={`Adicionar ${product.name} aos favoritos`}
+          aria-label={`${favorite ? "Remover" : "Adicionar"} ${product.name} ${favorite ? "dos" : "aos"} favoritos`}
+          onClick={(event) => {
+            event.preventDefault();
+            event.stopPropagation();
+            toggleFavorite(product.id);
+          }}
           className="absolute right-3 top-3 rounded-full border border-latelier-charcoal/15 bg-white/85 p-2 text-latelier-charcoal transition-colors duration-200 hover:bg-white"
         >
-          <Heart className="h-4 w-4" />
+          <Heart className={`h-4 w-4 ${favorite ? "fill-current" : ""}`} />
         </button>
       </div>
       <div className="flex items-start justify-between gap-2">

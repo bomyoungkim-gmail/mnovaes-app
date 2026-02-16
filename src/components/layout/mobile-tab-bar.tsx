@@ -2,28 +2,31 @@
 
 import { motion, useReducedMotion } from "framer-motion";
 import Link from "next/link";
-import { Home, Search, ShoppingBag, UserRound } from "lucide-react";
+import { Heart, Home, Search, ShoppingBag, UserRound } from "lucide-react";
 import { usePathname } from "next/navigation";
 
 import { useCart } from "@/context/cart-context";
+import { useWishlist } from "@/context/wishlist-context";
 import { cn } from "@/lib/utils";
 
 export function MobileTabBar() {
   const pathname = usePathname();
   const reduceMotion = useReducedMotion();
   const { items } = useCart();
+  const { count } = useWishlist();
   const itemCount = items.reduce((acc, item) => acc + item.quantity, 0);
 
   const links = [
     { href: "/", label: "Início", icon: Home },
     { href: "/plp", label: "Buscar", icon: Search },
+    { href: "/wishlist", label: "Favoritos", icon: Heart },
     { href: "/cart", label: "Sacola", icon: ShoppingBag },
-    { href: "/checkout", label: "Conta", icon: UserRound }
+    { href: "/account", label: "Conta", icon: UserRound }
   ];
 
   return (
     <nav aria-label="Navegação rápida" className="fixed bottom-2 left-1/2 z-30 w-[calc(100%-1rem)] -translate-x-1/2 rounded-2xl border border-latelier-charcoal/15 bg-white/95 px-2 pb-[max(0.5rem,env(safe-area-inset-bottom))] pt-2 shadow-luxe backdrop-blur-md md:hidden">
-      <ul className="grid grid-cols-4">
+      <ul className="grid grid-cols-5">
         {links.map((item) => {
           const Icon = item.icon;
           const active = pathname === item.href;
@@ -45,9 +48,9 @@ export function MobileTabBar() {
                 ) : null}
                 <span className="relative inline-flex">
                   <Icon className="h-4 w-4" />
-                  {item.href === "/cart" && itemCount > 0 ? (
+                  {(item.href === "/cart" && itemCount > 0) || (item.href === "/wishlist" && count > 0) ? (
                     <span className="absolute -right-2 -top-2 inline-flex h-4 min-w-4 items-center justify-center rounded-full bg-latelier-charcoal px-1 text-[9px] text-white">
-                      {itemCount}
+                      {item.href === "/cart" ? itemCount : count}
                     </span>
                   ) : null}
                 </span>

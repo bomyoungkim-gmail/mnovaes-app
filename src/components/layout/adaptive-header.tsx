@@ -4,7 +4,9 @@ import Link from "next/link";
 import { Heart, Menu, Search, UserRound } from "lucide-react";
 
 import { QuickCartDrawer } from "@/components/commerce/quick-cart-drawer";
+import { useAuth } from "@/context/auth-context";
 import { useCart } from "@/context/cart-context";
+import { useWishlist } from "@/context/wishlist-context";
 import { cn } from "@/lib/utils";
 
 type HeaderProps = {
@@ -12,8 +14,10 @@ type HeaderProps = {
   dark?: boolean;
 };
 
-export function AdaptiveHeader({ brand = "L'Atelier", dark = false }: HeaderProps) {
+export function AdaptiveHeader({ brand = "M.Novaes", dark = false }: HeaderProps) {
   const { items } = useCart();
+  const { count } = useWishlist();
+  const { isAuthenticated } = useAuth();
   const itemCount = items.reduce((acc, item) => acc + item.quantity, 0);
 
   return (
@@ -34,18 +38,25 @@ export function AdaptiveHeader({ brand = "L'Atelier", dark = false }: HeaderProp
           {brand}
         </Link>
         <div className="flex items-center gap-1 md:gap-2">
-          <button
-            aria-label="Conta"
+          <Link
+            href="/account"
+            aria-label={isAuthenticated ? "Minha conta" : "Login e cadastro"}
             className="rounded-sm p-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-current"
           >
             <UserRound className="h-5 w-5" />
-          </button>
-          <button
+          </Link>
+          <Link
+            href="/wishlist"
             aria-label="Favoritos"
-            className="rounded-sm p-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-current"
+            className="relative rounded-sm p-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-current"
           >
-            <Heart className="h-5 w-5" />
-          </button>
+            <Heart className={cn("h-5 w-5", count > 0 ? "fill-current" : "")} />
+            {count > 0 ? (
+              <span className="absolute right-0 top-0 inline-flex h-4 min-w-4 items-center justify-center rounded-full bg-latelier-charcoal px-1 text-[9px] text-white">
+                {count}
+              </span>
+            ) : null}
+          </Link>
           <button
             aria-label="Buscar"
             className="rounded-sm p-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-current md:hidden"

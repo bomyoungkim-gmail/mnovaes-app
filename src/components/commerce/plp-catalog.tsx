@@ -51,7 +51,7 @@ export function PlpCatalog() {
   return (
     <>
       <div className="mb-4 flex items-center justify-between md:hidden">
-        <h1 className="font-serif text-4xl">L&apos;Atelier</h1>
+        <h1 className="font-serif text-4xl">M.Novaes</h1>
         <button className="inline-flex h-10 items-center gap-2 rounded-md border border-latelier-charcoal/20 px-3 text-xs uppercase tracking-editorial">
           <SlidersHorizontal className="h-4 w-4" /> Filtrar
         </button>
@@ -59,7 +59,7 @@ export function PlpCatalog() {
 
       <div className="grid gap-8 lg:grid-cols-[250px_1fr] xl:gap-10">
         <aside className="hidden border-r border-latelier-charcoal/15 pr-5 lg:block">
-          <h1 className="font-serif text-[6.2rem] leading-none">L&apos;Atelier</h1>
+          <h1 className="font-serif text-[6.2rem] leading-none">M.Novaes</h1>
           <div className="mt-8 space-y-4">
             {Object.entries(filters).map(([title, values]) => (
               <section key={title} className="border-b border-latelier-charcoal/15 pb-4">

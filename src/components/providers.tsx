@@ -3,7 +3,9 @@
 import { PropsWithChildren, useEffect } from "react";
 import Lenis from "lenis";
 
+import { AuthProvider } from "@/context/auth-context";
 import { CartProvider } from "@/context/cart-context";
+import { WishlistProvider } from "@/context/wishlist-context";
 
 export function Providers({ children }: PropsWithChildren) {
   useEffect(() => {
@@ -35,5 +37,11 @@ export function Providers({ children }: PropsWithChildren) {
     };
   }, []);
 
-  return <CartProvider>{children}</CartProvider>;
+  return (
+    <AuthProvider>
+      <WishlistProvider>
+        <CartProvider>{children}</CartProvider>
+      </WishlistProvider>
+    </AuthProvider>
+  );
 }

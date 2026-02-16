@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { Lock } from "lucide-react";
 import { motion, useReducedMotion } from "framer-motion";
 
@@ -9,15 +10,28 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { useAuth } from "@/context/auth-context";
 import { useCart } from "@/context/cart-context";
 
 export default function CheckoutPage() {
   const reduceMotion = useReducedMotion();
   const { subtotal } = useCart();
+  const { isAuthenticated, user } = useAuth();
 
   return (
     <BaseLayout>
       <h1 className="font-serif text-5xl md:text-7xl">Checkout</h1>
+      {!isAuthenticated ? (
+        <p className="mt-2 text-sm text-latelier-charcoal/75">
+          Faça login em{" "}
+          <Link href="/account" className="underline">
+            Minha conta
+          </Link>{" "}
+          para salvar seus dados.
+        </p>
+      ) : (
+        <p className="mt-2 text-sm text-latelier-charcoal/75">Compra como {user?.name}</p>
+      )}
 
       <motion.div
         initial={reduceMotion ? false : { opacity: 0, y: 10 }}

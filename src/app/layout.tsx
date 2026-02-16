@@ -19,7 +19,7 @@ const sans = Montserrat({
 });
 
 export const metadata: Metadata = {
-  title: "L'Atelier",
+  title: "M.Novaes",
   description: "Luxury e-commerce experience"
 };
 

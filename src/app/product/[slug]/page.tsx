@@ -29,7 +29,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
   const recommended = products.filter((item) => item.id !== product.id).slice(0, 4);
 
   return (
-    <BaseLayout brand={product.theme === "ethere" ? "Ethere" : "L'Atelier"} fluid>
+    <BaseLayout brand={product.theme === "ethere" ? "Ethere" : "M.Novaes"} fluid>
       <section className="grid md:min-h-[70vh] md:grid-cols-[1.1fr_0.9fr]">
         <div className="grid gap-3 bg-latelier-silk p-4 md:grid-cols-[1fr_120px] md:p-8">
           <Image
