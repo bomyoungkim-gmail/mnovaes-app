@@ -3,6 +3,7 @@
 import Link from "next/link";
 
 import { BaseLayout } from "@/components/layout/base-layout";
+import { BreadcrumbMinimal } from "@/components/layout/breadcrumb-minimal";
 import { LuxuryProductCard } from "@/components/commerce/luxury-product-card";
 import { Button } from "@/components/ui/button";
 import { useWishlist } from "@/context/wishlist-context";
@@ -12,6 +13,7 @@ export default function WishlistPage() {
 
   return (
     <BaseLayout>
+      <BreadcrumbMinimal className="mb-4" items={[{ label: "Início", href: "/" }, { label: "Favoritos" }]} />
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
           <h1 className="font-serif text-5xl md:text-7xl">Favoritos</h1>

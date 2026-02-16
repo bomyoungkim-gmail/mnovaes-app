@@ -53,14 +53,14 @@ export function AdaptiveHeader({ brand = "M.Novaes", dark = false }: HeaderProps
     <>
       <header
         className={cn(
-          "sticky top-0 z-40 border-b transition-colors duration-300",
+          "sticky top-0 z-40 border-b transition-all duration-300",
           dark
             ? scrolled
-              ? "border-white/10 bg-black/45 text-white backdrop-blur-sm"
+              ? "border-white/20 bg-black/35 text-white backdrop-blur-xl supports-[backdrop-filter]:bg-black/30 shadow-[0_8px_30px_rgba(0,0,0,0.25)]"
               : "border-transparent bg-black/10 text-white"
             : scrolled
-              ? "border-latelier-charcoal/10 bg-white/90 text-latelier-charcoal backdrop-blur-sm"
-              : "border-transparent bg-white/35 text-latelier-charcoal"
+              ? "border-white/45 bg-white/55 text-latelier-charcoal backdrop-blur-xl supports-[backdrop-filter]:bg-white/45 shadow-[0_8px_30px_rgba(17,24,39,0.12)]"
+              : "border-transparent bg-white/20 text-latelier-charcoal"
         )}
       >
         <div className="mx-auto flex h-16 max-w-[1560px] items-center justify-between px-4 md:px-8">

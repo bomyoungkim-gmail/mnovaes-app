@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
-import { Camera, ImagePlus, Sparkles } from "lucide-react";
+import { Camera, Search, Sparkles } from "lucide-react";
 
 import { LuxuryProductCard } from "@/components/commerce/luxury-product-card";
 import { Button } from "@/components/ui/button";
@@ -39,6 +39,7 @@ export function AIVisualSearch() {
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [fileName, setFileName] = useState("");
   const [results, setResults] = useState<Product[]>([]);
+  const [query, setQuery] = useState("");
 
   const helperText = useMemo(() => {
     if (state === "loading") return "Analisando textura, silhueta e composição visual...";
@@ -63,28 +64,67 @@ export function AIVisualSearch() {
     setState("done");
   }
 
+  function handleTextSearch() {
+    const normalized = query.trim().toLowerCase();
+    if (!normalized) {
+      setState("idle");
+      setResults([]);
+      return;
+    }
+    setState("loading");
+    setTimeout(() => {
+      const byName = allProducts.filter((item) => item.name.toLowerCase().includes(normalized));
+      setResults((byName.length > 0 ? byName : allProducts.slice(0, 4)).slice(0, 4));
+      setState("done");
+    }, 500);
+  }
+
   return (
     <section className="mb-8 border border-latelier-charcoal/10 bg-white/80 p-4 md:mb-10 md:p-6">
-      <header className="flex flex-wrap items-end justify-between gap-3">
+      <header>
         <div>
           <p className="text-xs uppercase tracking-editorial text-latelier-charcoal/60">AI Visual Search</p>
           <h2 className="mt-1 font-serif text-3xl leading-none md:text-4xl">Busca por Imagem</h2>
         </div>
-        <label className="inline-flex cursor-pointer items-center gap-2 rounded-full border border-latelier-charcoal/25 px-4 py-2 text-xs uppercase tracking-editorial text-latelier-charcoal transition-colors duration-200 hover:bg-latelier-charcoal hover:text-white">
-          <ImagePlus className="h-3.5 w-3.5" />
-          Enviar referência
-          <input
-            type="file"
-            accept="image/*"
-            className="sr-only"
-            onChange={(event) => {
-              const file = event.target.files?.[0];
-              if (!file) return;
-              void handleFile(file);
-            }}
-          />
-        </label>
       </header>
+
+      <div className="mt-4">
+        <div className="flex h-11 items-center rounded-full border border-latelier-charcoal/20 bg-white pl-4 pr-1">
+          <Search className="h-4 w-4 text-latelier-charcoal/55" />
+          <input
+            type="search"
+            value={query}
+            onChange={(event) => setQuery(event.target.value)}
+            onKeyDown={(event) => {
+              if (event.key === "Enter") {
+                event.preventDefault();
+                handleTextSearch();
+              }
+            }}
+            placeholder="Buscar por nome ou estilo"
+            className="h-full flex-1 bg-transparent px-3 text-sm text-latelier-charcoal placeholder:text-latelier-charcoal/55 focus:outline-none"
+          />
+          <label
+            aria-label="Buscar por imagem"
+            className="mr-1 inline-flex h-9 w-9 cursor-pointer items-center justify-center rounded-full border border-latelier-charcoal/20 text-latelier-charcoal transition-colors duration-200 hover:bg-latelier-charcoal hover:text-white"
+          >
+            <Camera className="h-4 w-4" />
+            <input
+              type="file"
+              accept="image/*"
+              className="sr-only"
+              onChange={(event) => {
+                const file = event.target.files?.[0];
+                if (!file) return;
+                void handleFile(file);
+              }}
+            />
+          </label>
+          <Button type="button" size="sm" className="rounded-full px-4" onClick={handleTextSearch}>
+            Buscar
+          </Button>
+        </div>
+      </div>
 
       <div className="mt-4 grid gap-4 lg:grid-cols-[250px_1fr]">
         <div className="space-y-3">
